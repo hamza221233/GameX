@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ألعاب - ثقافة عامة، تيك تاك تو، تخمين العلم</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease-in-out;
+        }
+        
+        /* شاشة البداية */
+        #main-menu {
+            margin-top: 50px;
+        }
+        
+        #main-menu h1 {
+            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .game-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            width: 200px;
+        }
+        
+        .game-button:hover {
+            background-color: #e68900;
+            transform: scale(1.05);
+        }
+        
+        /* لعبة ثقافة عامة */
+        #culture-game {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        #culture-game h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        .question-container {
+            font-size: 24px;
+            margin: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .answer-button {
+            width: 250px;
+            padding: 15px;
+            margin: 10px auto;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: block;
+        }
+        
+        .answer-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .counter {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        
+        /* لعبة تيك تاك تو */
+        #tictactoe-game {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        #tictactoe-game h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        #player-select {
+            margin-bottom: 20px;
+        }
+        
+        #difficulty-select {
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .option-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .option-button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .option-button.selected {
+            background-color: #ff9800;
+            transform: scale(1.05);
+        }
+        
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            justify-content: center;
+        }
+        
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .cell:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        #game-result {
+            font-size: 24px;
+            margin: 20px;
+            font-weight: bold;
+        }
+        
+        /* لعبة تخمين العلم */
+        #flag-game {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        #flag-game h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        #flag-container {
+            margin: 20px auto;
+            width: 300px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        #flag-image {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        #flag-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px;
+        }
+        
+        .flag-option {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .flag-option:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+            transform: scale(1.05);
+        }
+        
+        #flag-stats {
+            margin: 20px;
+            font-size: 18px;
+        }
+        
+        #palestine-hashtag {
+            display: none;
+            color: #ff9800;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 10px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* الأزرار المشتركة */
+        .back-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin: 20px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .back-button:hover {
+            background-color: #e64a19;
+        }
+        
+        /* شاشات النتائج */
+        .result-screen {
+            display: none;
+            margin-top: 50px;
+        }
+        
+        .result-screen h3 {
+            font-size: 28px;
+            color: #ff9800;
+        }
+        
+        footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة البداية -->
+    <div id="main-menu">
+        <h1>اختر لعبة</h1>
+        <button class="game-button" id="start-culture">ثقافة عامة</button>
+        <button class="game-button" id="start-tictactoe">تيك تاك تو</button>
+        <button class="game-button" id="start-flag">تخمين العلم</button>
+    </div>
+
+    <!-- لعبة ثقافة عامة -->
+    <div id="culture-game">
+        <h2>ثقافة عامة</h2>
+        <div class="question-container" id="culture-question"></div>
+        <button class="answer-button" onclick="answer(1)" id="answer1"></button>
+        <button class="answer-button" onclick="answer(2)" id="answer2"></button>
+        <button class="answer-button" onclick="answer(3)" id="answer3"></button>
+        <button class="answer-button" onclick="answer(4)" id="answer4"></button>
+        <div class="counter" id="culture-counter">مستوى: 1</div>
+        <button class="back-button" onclick="goToMainMenu()">العودة للقائمة</button>
+    </div>
+
+    <!-- شاشة الفوز في ثقافة عامة -->
+    <div class="result-screen" id="culture-win">
+        <h3>مبروك! فزت! 🎉</h3>
+        <button class="back-button" onclick="goToMainMenu()">العودة للقائمة</button>
+    </div>
+
+    <!-- شاشة الخسارة في ثقافة عامة -->
+    <div class="result-screen" id="culture-lose">
+        <h3>آسف! لقد خسرت 😞</h3>
+        <button class="back-button" onclick="restartCultureGame()">إعادة المحاولة</button>
+    </div>
+
+    <!-- لعبة تيك تاك تو -->
+    <div id="tictactoe-game">
+        <h2>تيك تاك تو (X O)</h2>
+        
+        <div id="player-select">
+            <h3>اختر نوع اللعب:</h3>
+            <button class="option-button" id="vs-human">ضد لاعب آخر</button>
+            <button class="option-button" id="vs-computer">ضد الكمبيوتر</button>
+        </div>
+        
+        <div id="difficulty-select">
+            <h3>اختر مستوى الصعوبة:</h3>
+            <button class="option-button" id="easy">سهل</button>
+            <button class="option-button" id="medium">متوسط</button>
+            <button class="option-button" id="hard">صعب</button>
+        </div>
+        
+        <div id="game-board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div id="game-result"></div>
+        <button class="back-button" onclick="resetGame()">إعادة اللعب</button>
+        <button class="back-button" onclick="goToMainMenu()">العودة للقائمة</button>
+    </div>
+
+    <!-- لعبة تخمين العلم -->
+    <div id="flag-game">
+        <h2>تخمين العلم</h2>
+        
+        <div id="flag-difficulty">
+            <h3>اختر مستوى الصعوبة:</h3>
+            <button class="option-button" id="flag-easy">سهل (10 أعلام)</button>
+            <button class="option-button" id="flag-medium">متوسط (25 علماً)</button>
+            <button class="option-button" id="flag-hard">صعب (كل الأعلام)</button>
+        </div>
+        
+        <div id="flag-game-container" style="display:none;">
+            <div id="flag-container">
+                <img id="flag-image" src="" alt="علم الدولة">
+            </div>
+            <div id="palestine-hashtag">#FreePalestine</div>
+            <div id="flag-options"></div>
+            <div id="flag-stats">
+                <p>الإجابات الصحيحة: <span id="correct-answers">0</span></p>
+                <p>الإجابات الخاطئة: <span id="wrong-answers">0</span></p>
+            </div>
+            <button class="back-button" onclick="goToMainMenu()">العودة للقائمة</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>حقوق الطبع والنشر &copy; 2023</p>
+    </footer>
+
+    <script>
+       // ============ إعداد الأصوات ============
+        const correctSound = new Audio('youtube_AFYWsbUSasw_audio.mp3');
+        const wrongSound = new Audio('youtube_jAIlKqL3nHo_audio.mp3');
+        const winSound = new Audio('youtube_AFYWsbUSasw_audio.mp3');
+        const clickSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-plastic-tap-2029.wav');
+        const flagSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav');
+
+        // ============ لعبة ثقافة عامة ============
+        
+        
+        const cultureQuestions = [
+            { question: "ما هو أكبر كوكب في المجموعة الشمسية؟", options: ["عطارد", "المشتري", "الأرض", "المريخ"], correctAnswer: 2 },
+            { question: "ما هو عاصمة اليابان؟", options: ["طوكيو", "سيول", "بكين", "شنغهاي"], correctAnswer: 1 },
+            // ... (أسئلة أخرى)
+        ];
+        
+        let currentCultureQuestion = 0;
+        let cultureLevel = 1;
+        
+        function startCultureGame() {
+            currentCultureQuestion = 0;
+            cultureLevel = 1;
+            shuffleQuestions();
+            showCultureQuestion();
+        }
+        
+        function shuffleQuestions() {
+            for (let i = cultureQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cultureQuestions[i], cultureQuestions[j]] = [cultureQuestions[j], cultureQuestions[i]];
+            }
+        }
+        
+        function showCultureQuestion() {
+            const questionData = cultureQuestions[currentCultureQuestion];
+            document.getElementById('culture-question').textContent = questionData.question;
+            
+            const answerButtons = [
+                document.getElementById('answer1'),
+                document.getElementById('answer2'),
+                document.getElementById('answer3'),
+                document.getElementById('answer4')
+            ];
+            
+            answerButtons.forEach((btn, index) => {
+                btn.textContent = questionData.options[index];
+            });
+            
+            document.getElementById('culture-counter').textContent = `مستوى: ${cultureLevel}`;
+        }
+        
+        function answer(selectedAnswer) {
+            const questionData = cultureQuestions[currentCultureQuestion];
+            if (selectedAnswer === questionData.correctAnswer) {
+                correctSound.currentTime = 0;
+                correctSound.play();
+                
+                cultureLevel++;
+                if (currentCultureQuestion < cultureQuestions.length - 1) {
+                    currentCultureQuestion++;
+                    showCultureQuestion();
+                } else {
+                    winSound.currentTime = 0;
+                    winSound.play();
+                    document.getElementById('culture-game').style.display = 'none';
+                    document.getElementById('culture-win').style.display = 'block';
+                }
+            } else {
+                wrongSound.currentTime = 0;
+                wrongSound.play();
+                document.getElementById('culture-game').style.display = 'none';
+                document.getElementById('culture-lose').style.display = 'block';
+            }
+        }
+        
+        function restartCultureGame() {
+            document.getElementById('culture-lose').style.display = 'none';
+            document.getElementById('culture-game').style.display = 'block';
+            startCultureGame();
+        }
+
+        // ============ لعبة تيك تاك تو ============
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let vsComputer = false;
+        let computerPlayer = 'O';
+        let difficulty = 'medium';
+        
+        // عناصر DOM
+        const cells = document.querySelectorAll('.cell');
+        const vsHumanBtn = document.getElementById('vs-human');
+        const vsComputerBtn = document.getElementById('vs-computer');
+        const difficultySelect = document.getElementById('difficulty-select');
+        const easyBtn = document.getElementById('easy');
+        const mediumBtn = document.getElementById('medium');
+        const hardBtn = document.getElementById('hard');
+        
+        // أحداث الأزرار
+        vsHumanBtn.addEventListener('click', function() {
+            vsComputer = false;
+            selectOption(this, vsComputerBtn);
+            difficultySelect.style.display = 'none';
+            resetGame();
+        });
+        
+        vsComputerBtn.addEventListener('click', function() {
+            vsComputer = true;
+            selectOption(this, vsHumanBtn);
+            difficultySelect.style.display = 'block';
+            resetGame();
+        });
+        
+        easyBtn.addEventListener('click', function() {
+            difficulty = 'easy';
+            selectOption(this, [mediumBtn, hardBtn]);
+            computerPlayer = 'O';
+            resetGame();
+        });
+        
+        mediumBtn.addEventListener('click', function() {
+            difficulty = 'medium';
+            selectOption(this, [easyBtn, hardBtn]);
+            computerPlayer = Math.random() > 0.5 ? 'X' : 'O';
+            resetGame();
+        });
+        
+        hardBtn.addEventListener('click', function() {
+            difficulty = 'hard';
+            selectOption(this, [easyBtn, mediumBtn]);
+            computerPlayer = 'X';
+            resetGame();
+        });
+        
+        function selectOption(selected, others) {
+            selected.classList.add('selected');
+            if (Array.isArray(others)) {
+                others.forEach(btn => btn.classList.remove('selected'));
+            } else {
+                others.classList.remove('selected');
+            }
+        }
+        
+        function handleCellClick(e) {
+            const index = e.target.getAttribute('data-index');
+            
+            if (board[index] !== '' || !gameActive) return;
+            
+            clickSound.currentTime = 0;
+            clickSound.play();
+            
+            makeMove(index, currentPlayer);
+            
+            if (vsComputer && gameActive && currentPlayer === computerPlayer) {
+                setTimeout(computerMove, 500);
+            }
+        }
+        
+        function makeMove(index, player) {
+            board[index] = player;
+            cells[index].textContent = player;
+            
+            if (checkWin()) {
+                document.getElementById('game-result').textContent = `فاز اللاعب ${player}!`;
+                gameActive = false;
+                return;
+            }
+            
+            if (checkDraw()) {
+                document.getElementById('game-result').textContent = "تعادل!";
+                gameActive = false;
+                return;
+            }
+            
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+        
+        function computerMove() {
+            if (!gameActive) return;
+            
+            let move;
+            
+            if (difficulty === 'easy') {
+                move = getRandomMove();
+            } else if (difficulty === 'medium') {
+                move = Math.random() > 0.5 ? getSmartMove() : getRandomMove();
+            } else {
+                move = getSmartMove();
+            }
+            
+            makeMove(move, computerPlayer);
+        }
+        
+        function getRandomMove() {
+            let availableCells = [];
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    availableCells.push(i);
+                }
+            }
+            return availableCells[Math.floor(Math.random() * availableCells.length)];
+        }
+        
+        function getSmartMove() {
+            // 1. حاول الفوز
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = computerPlayer;
+                    if (checkWin()) {
+                        board[i] = '';
+                        return i;
+                    }
+                    board[i] = '';
+                }
+            }
+            
+            // 2. منع الخصم من الفوز
+            const humanPlayer = computerPlayer === 'X' ? 'O' : 'X';
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = humanPlayer;
+                    if (checkWin()) {
+                        board[i] = '';
+                        return i;
+                    }
+                    board[i] = '';
+                }
+            }
+            
+            // 3. احتل المركز
+            const center = 4;
+            if (board[center] === '') {
+                return center;
+            }
+            
+            // 4. اختر زاوية
+            const corners = [0, 2, 6, 8];
+            const availableCorners = corners.filter(i => board[i] === '');
+            if (availableCorners.length > 0) {
+                return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+            }
+            
+            // 5. حركة عشوائية
+            return getRandomMove();
+        }
+        
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            
+            return winPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                return board[a] && board[a] === board[b] && board[a] === board[c];
+            });
+        }
+        
+        function checkDraw() {
+            return board.every(cell => cell !== '');
+        }
+        
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            document.getElementById('game-result').textContent = '';
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+            
+            if (vsComputer && computerPlayer === 'X') {
+                setTimeout(computerMove, 500);
+            }
+        }
+
+        // ============ لعبة تخمين العلم ============
+        const allFlags = [
+            { name: "فلسطين", code: "ps", hashtag: true },
+            { name: "السعودية", code: "sa" },
+            { name: "مصر", code: "eg" },
+            { name: "الجزائر", code: "dz" },
+            { name: "المغرب", code: "ma" },
+            { name: "العراق", code: "iq" },
+            { name: "الأردن", code: "jo" },
+            { name: "الإمارات", code: "ae" },
+            { name: "الكويت", code: "kw" },
+            { name: "قطر", code: "qa" },
+            { name: "عمان", code: "om" },
+            { name: "اليمن", code: "ye" },
+            { name: "سوريا", code: "sy" },
+            { name: "لبنان", code: "lb" },
+            { name: "ليبيا", code: "ly" },
+            { name: "تونس", code: "tn" },
+            { name: "السودان", code: "sd" },
+            { name: "الصومال", code: "so" },
+            { name: "جيبوتي", code: "dj" },
+            { name: "موريتانيا", code: "mr" },
+            { name: "جزر القمر", code: "km" },
+            // دول أخرى من آسيا
+            { name: "تركيا", code: "tr" },
+            { name: "إيران", code: "ir" },
+            { name: "أفغانستان", code: "af" },
+            { name: "باكستان", code: "pk" },
+            { name: "الهند", code: "in" },
+            { name: "الصين", code: "cn" },
+            { name: "اليابان", code: "jp" },
+            { name: "كوريا الجنوبية", code: "kr" },
+            { name: "ماليزيا", code: "my" },
+            { name: "إندونيسيا", code: "id" },
+            // دول أفريقيا
+            { name: "نيجيريا", code: "ng" },
+            { name: "جنوب أفريقيا", code: "za" },
+            { name: "كينيا", code: "ke" },
+            { name: "إثيوبيا", code: "et" },
+            // دول أوروبا
+            { name: "فرنسا", code: "fr" },
+            { name: "ألمانيا", code: "de" },
+            { name: "إيطاليا", code: "it" },
+            { name: "إسبانيا", code: "es" },
+            { name: "بريطانيا", code: "gb" },
+            { name: "روسيا", code: "ru" },
+            // دول الأمريكتين
+            { name: "الولايات المتحدة", code: "us" },
+            { name: "كندا", code: "ca" },
+            { name: "البرازيل", code: "br" },
+            { name: "الأرجنتين", code: "ar" },
+            { name: "المكسيك", code: "mx" },
+            // دول أخرى
+            { name: "أستراليا", code: "au" },
+            { name: "نيوزيلندا", code: "nz" }
+        ];
+
+        let currentFlag;
+        let flagOptions = [];
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let flagDifficulty = 'medium';
+        let usedFlags = [];
+        
+        // عناصر DOM
+        const flagEasyBtn = document.getElementById('flag-easy');
+        const flagMediumBtn = document.getElementById('flag-medium');
+        const flagHardBtn = document.getElementById('flag-hard');
+        const flagGameContainer = document.getElementById('flag-game-container');
+        const flagImage = document.getElementById('flag-image');
+        const flagOptionsContainer = document.getElementById('flag-options');
+        const palestineHashtag = document.getElementById('palestine-hashtag');
+        
+        // أحداث الأزرار
+        flagEasyBtn.addEventListener('click', function() {
+            flagDifficulty = 'easy';
+            selectOption(this, [flagMediumBtn, flagHardBtn]);
+            startFlagGame();
+        });
+        
+        flagMediumBtn.addEventListener('click', function() {
+            flagDifficulty = 'medium';
+            selectOption(this, [flagEasyBtn, flagHardBtn]);
+            startFlagGame();
+        });
+        
+        flagHardBtn.addEventListener('click', function() {
+            flagDifficulty = 'hard';
+            selectOption(this, [flagEasyBtn, flagMediumBtn]);
+            startFlagGame();
+        });
+        
+        function startFlagGame() {
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            usedFlags = [];
+            updateFlagStats();
+            flagGameContainer.style.display = 'block';
+            document.getElementById('flag-difficulty').style.display = 'none';
+            showNextFlag();
+        }
+        
+        function showNextFlag() {
+            // إخفاء هاشتاق فلسطين
+            palestineHashtag.style.display = 'none';
+            
+            // تحديد مجموعة الأعلام حسب الصعوبة
+            let availableFlags;
+            if (flagDifficulty === 'easy') {
+                availableFlags = allFlags.slice(0, 10);
+            } else if (flagDifficulty === 'medium') {
+                availableFlags = allFlags.slice(0, 25);
+            } else {
+                availableFlags = [...allFlags];
+            }
+            
+            // تصفية الأعلام التي لم تستخدم بعد
+            availableFlags = availableFlags.filter(flag => !usedFlags.includes(flag.code));
+            
+            // إذا استخدمنا كل الأعلام، نعيد تشغيل اللعبة
+            if (availableFlags.length === 0) {
+                alert(`تهانينا! لقد خمنت كل الأعلام! النتيجة النهائية: ${correctAnswers} صحيح، ${wrongAnswers} خطأ`);
+                usedFlags = [];
+                availableFlags = flagDifficulty === 'easy' ? allFlags.slice(0, 10) : 
+                                flagDifficulty === 'medium' ? allFlags.slice(0, 25) : [...allFlags];
+            }
+            
+            // اختيار علم عشوائي
+            currentFlag = availableFlags[Math.floor(Math.random() * availableFlags.length)];
+            usedFlags.push(currentFlag.code);
+            
+            // عرض العلم
+            flagImage.src = `https://flagcdn.com/w320/${currentFlag.code}.png`;
+            flagImage.alt = `علم ${currentFlag.name}`;
+            
+            // إذا كان العلم فلسطين، نعرض الهاشتاق
+            if (currentFlag.hashtag) {
+                palestineHashtag.style.display = 'block';
+            }
+            
+            // إنشاء خيارات الإجابة
+            createFlagOptions();
+        }
+        
+        function createFlagOptions() {
+            flagOptionsContainer.innerHTML = '';
+            flagOptions = [];
+            
+            // إضافة الإجابة الصحيحة
+            flagOptions.push(currentFlag.name);
+            
+            // إضافة إجابات خاطئة
+            let wrongOptions = allFlags
+                .filter(flag => flag.name !== currentFlag.name)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(flag => flag.name);
+            
+            flagOptions.push(...wrongOptions);
+            
+            // خلط الخيارات
+            flagOptions.sort(() => Math.random() - 0.5);
+            
+            // إنشاء أزرار الخيارات
+            flagOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'flag-option';
+                button.textContent = option;
+                button.onclick = () => checkFlagAnswer(option);
+                flagOptionsContainer.appendChild(button);
+            });
+        }
+        
+        function checkFlagAnswer(selectedAnswer) {
+            flagSound.currentTime = 0;
+            flagSound.play();
+            
+            if (selectedAnswer === currentFlag.name) {
+                correctSound.currentTime = 0;
+                correctSound.play();
+                correctAnswers++;
+                alert('إجابة صحيحة!');
+            } else {
+                wrongSound.currentTime = 0;
+                wrongSound.play();
+                wrongAnswers++;
+                alert(`خطأ! الإجابة الصحيحة هي: ${currentFlag.name}`);
+            }
+            
+            updateFlagStats();
+            showNextFlag();
+        }
+        
+        function updateFlagStats() {
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('wrong-answers').textContent = wrongAnswers;
+        }
+
+        // ============ وظائف عامة ============
+        function goToMainMenu() {
+            document.getElementById('culture-game').style.display = 'none';
+            document.getElementById('tictactoe-game').style.display = 'none';
+            document.getElementById('flag-game').style.display = 'none';
+            document.getElementById('culture-win').style.display = 'none';
+            document.getElementById('culture-lose').style.display = 'none';
+            document.getElementById('main-menu').style.display = 'block';
+            
+            // إعادة تعليمات لعبة الأعلام
+            document.getElementById('flag-difficulty').style.display = 'block';
+            document.getElementById('flag-game-container').style.display = 'none';
+        }
+        
+        // تهيئة الأحداث
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+        
+        document.getElementById('start-culture').addEventListener('click', () => {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('culture-game').style.display = 'block';
+            startCultureGame();
+        });
+        
+        document.getElementById('start-tictactoe').addEventListener('click', () => {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('tictactoe-game').style.display = 'block';
+            difficultySelect.style.display = vsComputer ? 'block' : 'none';
+            resetGame();
+        });
+        
+        document.getElementById('start-flag').addEventListener('click', () => {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('flag-game').style.display = 'block';
+            document.getElementById('flag-difficulty').style.display = 'block';
+            document.getElementById('flag-game-container').style.display = 'none';
+        });
+        
+        // اختيار اللعب ضد لاعب آخر افتراضياً
+        vsHumanBtn.classList.add('selected');
+        
+        // اختيار المستوى المتوسط افتراضياً في لعبة الأعلام
+        flagMediumBtn.classList.add('selected');
+    </script>
+</body>
+</html>
